@@ -2,9 +2,11 @@ package main
 
 import (
 	"flag"
+	"github.com/marcusbello/oauth-chat/trace"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
 )
@@ -31,6 +33,7 @@ func main() {
 	var addr = flag.String("addr", ":8080", "The addr ofthe application")
 	flag.Parse()
 	r := newRoom()
+	r.tracer = trace.New(os.Stdout)
 	//endpoints
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
